@@ -1,6 +1,9 @@
 # Machine Learning Semester Project : Playlist Completion and Music Recommendations
 Spring 2022 \\
 Group Members: Sichen Jin, Jiachen Ren, Antoine Rollet, Adriana Vega Fernández, Robert Ward
+## Proposal Video
+
+<iframe width="560" height="315" src="https://www.youtube.com/watch?v=M8-o4C4n2p8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ## Introduction & Background 
 Spotify has since become the most popular streaming music service, boasting more than 180M paid subscribers. How did Spotify become the leader of this highly competitive market?  The app design is centered around playlists, playlists based on your listening habits (what you like, share, save, skip) and the listening habits of others with similar taste. The user experience is personalized with algorithmically curated playlists like Discover Weekly and Release Radar and is now the base of their business model. 
