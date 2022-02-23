@@ -29,4 +29,4 @@ Sequence based approach: We will represent playlists as a sequence of song names
 4. Attentive Neural Architecture Incorporating Song Features For Music Recommendation
 
 ## Appendix
-Download GANTT chart [here](https://docs.google.com/spreadsheets/d/1GCflNSoz5ZRBmCNBwS3XKD6qB5tLzlA_FEJopwXzdZs/export?format=xlsx).
+Download GANTT chart [here](https://docs.google.com/spreadsheets/d/1eBinr-KAz04P-j1TpmxQwzl0uz0aNe7P/export?format=xlsx).
