@@ -27,5 +27,6 @@ Sequence based approach: We will represent playlists as a sequence of song names
 2. LightGCN: Simplifying and Powering Graph Convolution Network for Recommendation
 3. Bogdanov, Dmitry, et al. "Essentia: An audio analysis library for music information retrieval." Britto A, Gouyon F, Dixon S, editors. 14th Conference of the International Society for Music Information Retrieval (ISMIR); 2013 Nov 4-8; Curitiba, Brazil.[place unknown]: ISMIR; 2013. p. 493-8.. International Society for Music Information Retrieval (ISMIR), 2013.
 4. Attentive Neural Architecture Incorporating Song Features For Music Recommendation
+
 ## Appendix
 TODO : GANTT chart
