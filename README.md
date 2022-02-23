@@ -9,5 +9,6 @@ Group Members: Sichen Jin, Jiachen Ren, Antoine Rollet, Adriana Vega Fernández,
 ### Unsupervised Learning
 ### Supervised Learning
 ## Conclusion
+## References
 ## Appendix
 TODO : GANTT chart
