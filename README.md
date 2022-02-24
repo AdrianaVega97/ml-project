@@ -19,14 +19,19 @@ Basic clustering : We aim to perform basic clustering algorithms like K-Means or
 Graph-based approaches : We will first derive the songs-playlists bipartite graph from the dataset. Then we will explore some common graph-based methods, such as Random Walk (1), Neural Graph Collaborative Filtering (NGCF) and LightGCN (2), to learn the graph embeddings of songs and playlists for later prediction/recommendation use. 
 ### Supervised Learning
 Genre classification: We will perform Genre Classification, we are hoping to compare the results of this task with the results obtained in our unsupervised learning tasks. \\
-Sequence based approach: We will represent playlists as a sequence of song names. Then incorporate extracted song features into an attentive RNN for the prediction. 
+Sequence based approach: We will represent playlists as a sequence of song names. Then incorporate extracted song features into an attentive RNN for the prediction. \\
+We will also employ another graph-based approach, GraphSAGE (5) which can be trained in a fully supervised manner.
+
 
 ## Conclusion
+The goal of this project is to recommend songs to complete playlists.  Each of the methods described above will be used to generate a list of recommended songs for each playlist in the test data.  We will then evaluate their absolute performance in terms of their precision, accuracy and other metrics in order to understand which of these methods provides the best recommendations.
+
 ## References
 1. Random Walk with Restart for Automatic Playlist Continuation and Query-Specific Adaptations
 2. LightGCN: Simplifying and Powering Graph Convolution Network for Recommendation
 3. Bogdanov, Dmitry, et al. "Essentia: An audio analysis library for music information retrieval." Britto A, Gouyon F, Dixon S, editors. 14th Conference of the International Society for Music Information Retrieval (ISMIR); 2013 Nov 4-8; Curitiba, Brazil.[place unknown]: ISMIR; 2013. p. 493-8.. International Society for Music Information Retrieval (ISMIR), 2013.
 4. Attentive Neural Architecture Incorporating Song Features For Music Recommendation
+5. Inductive Representation Learning on Large Graphs
 
 ## Appendix
 Download GANTT chart [here](https://docs.google.com/spreadsheets/d/1eBinr-KAz04P-j1TpmxQwzl0uz0aNe7P/export?format=xlsx).
