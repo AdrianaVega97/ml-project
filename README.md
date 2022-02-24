@@ -15,11 +15,11 @@ We define the problem as automatic playlist completion. Our ground truth will be
 ### Dataset
 Spotify hosted a challenge called <a href="https://www.aicrowd.com/challenges/spotify-million-playlist-dataset-challenge" title="Million Dollar Playlist">Spotify Million Playlists</a> for which they provided a dataset of 1 million playlist, this is the dataset that we will use. In this dataset, each playlist is represented as a list of song ids. We also use Spotify’s API  in order to retrieve general information, precomputed audio features and audio samples from the previous 2.2M songs of the previous dataset.
 ### Unsupervised Learning
-Basic clustering : We aim to perform basic clustering algorithms like K-Means or DBSCAN on the audio features of the dataset provided by Spotify. \\
-Graph-based approaches : We will first derive the songs-playlists bipartite graph from the dataset. Then we will explore some common graph-based methods, such as Random Walk (1), Neural Graph Collaborative Filtering (NGCF) and LightGCN (2), to learn the graph embeddings of songs and playlists for later prediction/recommendation use. 
+Basic clustering : We aim to perform basic clustering algorithms like K-Means or DBSCAN on the audio features of the dataset provided by Spotify, which can serves as the candidate pool for our later recommendation task \\
+Graph-based approaches : We will first derive the songs-playlists bipartite graph from the dataset. Then we will explore some common graph-based methods, such as Random Walk (1), Neural Graph Collaborative Filtering (NGCF) (2) and LightGCN (3), to learn the graph embeddings of songs and playlists for later prediction/recommendation use. 
 ### Supervised Learning
 Genre classification: We will perform Genre Classification, we are hoping to compare the results of this task with the results obtained in our unsupervised learning tasks. \\
-Sequence based approach: We will represent playlists as a sequence of song names. Then incorporate extracted song features into an attentive RNN for the prediction. \\
+Sequence based approach: We will represent playlists as a sequence of song names. Then incorporate extracted song features into an attentive RNN for the prediction (4). \\
 We will also employ another graph-based approach, GraphSAGE (5) which can be trained in a fully supervised manner.
 
 
@@ -27,11 +27,11 @@ We will also employ another graph-based approach, GraphSAGE (5) which can be tra
 The goal of this project is to recommend songs to complete playlists.  Each of the methods described above will be used to generate a list of recommended songs for each playlist in the test data.  We will then evaluate their absolute performance in terms of their precision, accuracy and other metrics in order to understand which of these methods provides the best recommendations.
 
 ## References
-1. Random Walk with Restart for Automatic Playlist Continuation and Query-Specific Adaptations
-2. LightGCN: Simplifying and Powering Graph Convolution Network for Recommendation
-3. Bogdanov, Dmitry, et al. "Essentia: An audio analysis library for music information retrieval." Britto A, Gouyon F, Dixon S, editors. 14th Conference of the International Society for Music Information Retrieval (ISMIR); 2013 Nov 4-8; Curitiba, Brazil.[place unknown]: ISMIR; 2013. p. 493-8.. International Society for Music Information Retrieval (ISMIR), 2013.
-4. Attentive Neural Architecture Incorporating Song Features For Music Recommendation
-5. Inductive Representation Learning on Large Graphs
+1. van Niedek, Timo, and Arjen P. de Vries. "Random walk with restart for automatic playlist continuation and query-specific adaptations." Proceedings of the ACM Recommender Systems Challenge 2018. 2018. 1-6.
+2. Wang, Xiang, et al. "Neural graph collaborative filtering." Proceedings of the 42nd international ACM SIGIR conference on Research and development in Information Retrieval. 2019.
+3. He, Xiangnan, et al. "Lightgcn: Simplifying and powering graph convolution network for recommendation." Proceedings of the 43rd International ACM SIGIR conference on research and development in Information Retrieval. 2020.
+4. Sachdeva, Noveen, Kartik Gupta, and Vikram Pudi. "Attentive neural architecture incorporating song features for music recommendation." Proceedings of the 12th ACM Conference on Recommender Systems. 2018.
+5. Hamilton, Will, Zhitao Ying, and Jure Leskovec. "Inductive representation learning on large graphs." Advances in neural information processing systems 30 (2017).
 
 ## Appendix
 Download GANTT chart [here](https://docs.google.com/spreadsheets/d/1eBinr-KAz04P-j1TpmxQwzl0uz0aNe7P/export?format=xlsx).
