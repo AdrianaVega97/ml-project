@@ -1,4 +1,4 @@
-# Machine Learning Semester Project : Playlist Completion and Music Recommendations
+# ML Project : Music Recommendation and Genre Classification
 Spring 2022 \\
 Group Members: Sichen Jin, Jiachen Ren, Antoine Rollet, Adriana Vega Fernández, Robert Ward
 ## Proposal Video
