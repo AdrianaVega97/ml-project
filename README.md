@@ -2,7 +2,7 @@
 Spring 2022 \\
 Group Members: Sichen Jin, Jiachen Ren, Antoine Rollet, Adriana Vega Fernández, Robert Ward
 ## Proposal Video
-<iframe width="560" height="315" src="https://www.youtube.com/embed/M8-o4C4n2p8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/19_zbvP8lSg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ## Introduction & Background 
 Spotify has since become the most popular streaming music service, boasting more than 180M paid subscribers. Spotify achieved this position through its high-quality playlists based on listening habits (what you like, share, save, skip) and the listening habits of others with similar tastes. The user experience is personalized with algorithmically curated playlists like Discover Weekly and Release Radar and is now the base of their business model. Our project aims to replicate several tools Spotify uses to curate their playlists.
