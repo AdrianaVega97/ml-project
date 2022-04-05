@@ -77,6 +77,25 @@ We decided to perform the K-Means algorithm on our entire dataset. Since we have
 We can see that the only feature that seems to be clearly separated by the cluster is the mode. We are still searching for ways to work around this so that we can find other clusters. Removing the feature is one option although maybe a little simplistic. 
 
 ### Supervised Learning
+##### Song embeddings based on playlists
+
+The idea of this approach is to produce embeddings for each song, and run inference with a Nearest Neighbor search, using an aggregate of the embeddings as the query to find potential new candidates to fill the playlists.
+
+| Model name                                                                                                                 | Description                                                                                              | Input example | Output example |
+|----------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------|---------------|----------------|
+| Discriminative          | Feeding the model an input of song_ids and outputing whether each belong to a same playlist or not.      | [1, 3, 2, 7] | [1, 0, 1, 0]
+| Binary discriminative                                                                                                      | Feeding the model an input of song_ids and outputing if it's a playlist or not                           | [1, 3, 7] / [1, 2, 4]   | 0 / 1
+| Last song                                                                                                                  | Predicting a song_id of the playlist based on the other ones                                             |   [1,4] | 2
+| Last song with aggregate                                                                                                   | Predicting a song_id of the playlist based on the other ones but here embeddings of input are aggregated |   [6,5] | 3
+
+
+| Metrics                      | Discriminative<br/>model | Binary<br/> Discriminative<br/>model| Last Song model| Last song <br/>with aggregate |
+|------------------------------|--------------------------|--------|
+| Task accuracy                | 99.3%             |   97.2%  | 73.1% | 45.7%|
+| Inference accuracy (top-20)  | 0.0%                    | 0.0%    | 0.1%| 0.0%|
+| Inference accuracy (top-500) | 0.4%                     | 0.0%    | 0.9%| 0.1%|
+
+Playlists example: #1: [1, 2, 4], #2: [3, 5, 6], #2: [7, 8]
 
 LSTM/RNN for genre prediction: We will train an LSTM using raw audio samples as features and genre labels as GT labels. The model will consist of several recurrent layers followed by linear layers. The rationale is to use the cell state (or hidden state) from the last recurrent layer as a learned embedding of the audio sample, and then use the subsequent linear layers to classify the embedding into the correct genre label.
 
