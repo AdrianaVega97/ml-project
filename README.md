@@ -17,6 +17,10 @@ We will use <a href="https://www.aicrowd.com/challenges/spotify-million-playlist
 
 ##### Data Collection
 
+We downloaded the Million Playlist Dataset. We had to do some data pre processing because the dataset is very large and there were some information that we demmed not useful. Like the creation date of the playlist and the number of songs per playlist. We figured they would be redundant. We stored them as JSON files in our colab environment so everyone could have access to them. We kept only the tracklist for each playlist. 
+
+We used Spotify's API to recover the audiofeatures for each track. Spotify limits the number of requests one can make per day, since our dataset contains over 2 million tracks, this took some time to gather, even with multiple developper accounts. We also acquiered artist information, like the different genres one artist is assigned to. However, we could not use this yet because we are interested in the genre for a particular track. We know that there is the [tagtraum genre annotations for the Million Song Dataset](https://www.tagtraum.com/msd_genre_datasets.html) which contains manual annotations for the genre of a particular track. This is a work in progress. 
+
 ### Unsupervised Learning
 
 Genre classification: We aim to perform K-Means clustering on the selected audio features of songs. Given a set of songs and their corresponding genre label (with k genres total), we will cluster them into k clusters based on audio features in the Euclidean space. We will simply compare the distance between the audio features of new songs and the learned cluster centers to make genre predictions.
