@@ -91,11 +91,11 @@ Playlists used for example: #1: [1, 2, 4], #2: [3, 5, 6], #3: [7, 8]
 | Last song with aggregate                                                                                                   | Predicting a song_id of the playlist based on the other ones but here embeddings of input are aggregated |   [6,5] | 3
 
 
-| Metrics                      | Discriminative<br/>model | Binary<br/> Discriminative<br/>model| Last Song model| Last song <br/>with aggregate |
-|------------------------------|--------------------------|--------|
-| Task accuracy                | 99.3%             |   97.2%  | 73.1% | 45.7%|
-| Inference accuracy (top-20)  | 0.0%                    | 0.0%    | 0.1%| 0.0%|
-| Inference accuracy (top-500) | 0.4%                     | 0.0%    | 0.9%| 0.1%|
+| Metrics                      | Discriminative<br/>model | Binary<br/> Discriminative<br/>model| Last Song model| Last song <br/>with aggregate 
+|------------------------------|--------------------------|--------
+| Task accuracy                | 99.3%             |   97.2%  | 73.1% | 45.7%
+| Inference accuracy (top-20)  | 0.0%                    | 0.0%    | 0.1%| 0.0%
+| Inference accuracy (top-500) | 0.4%                     | 0.0%    | 0.9%| 0.1%
 
 For now, we have not yet been able to achieve good results. Part of the problem is that the feature we are trying to create is very large (there is over 2M songs) and thus embeddings created are not yet accurate enough. Further improvements will include implementing a model similar to the Nearest Neighbor algorithm and try to make use of RNN layers.  
 
