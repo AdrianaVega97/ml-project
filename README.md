@@ -79,9 +79,11 @@ We can see that the only feature that seems to be clearly separated by the clust
 ### Supervised Learning
 ##### Song embeddings based on playlists
 
-The idea of this approach is to produce embeddings for each song, and run inference with a Nearest Neighbor search, using an aggregate of the embeddings as the query to find potential new candidates to fill the playlists.
+The idea of this approach is to produce embeddings for each song, and run inference with a Nearest Neighbor search, using an aggregate of the embeddings as the query to find potential new candidates to fill the playlists. Each model is trained using an Embedding layer and a network on various tasks hoping to create interesting features for the songs (the Embedding layer). Data used to train them is simply the playlists data.
 
-| Model name                                                                                                                 | Description                                                                                              | Input example | Output example |
+Playlists used for example: #1: [1, 2, 4], #2: [3, 5, 6], #3: [7, 8]
+
+| Model name                                                                                                                 | Task Description                                                                                              | Input example | Output example |
 |----------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------|---------------|----------------|
 | Discriminative          | Feeding the model an input of song_ids and outputing whether each belong to a same playlist or not.      | [1, 3, 2, 7] | [1, 0, 1, 0]
 | Binary discriminative                                                                                                      | Feeding the model an input of song_ids and outputing if it's a playlist or not                           | [1, 3, 7] / [1, 2, 4]   | 0 / 1
@@ -95,7 +97,7 @@ The idea of this approach is to produce embeddings for each song, and run infere
 | Inference accuracy (top-20)  | 0.0%                    | 0.0%    | 0.1%| 0.0%|
 | Inference accuracy (top-500) | 0.4%                     | 0.0%    | 0.9%| 0.1%|
 
-Playlists example: #1: [1, 2, 4], #2: [3, 5, 6], #2: [7, 8]
+For now, we have not yet been able to achieve good results. Part of the problem is that the feature we are trying to create is very large (there is over 2M songs) and thus embeddings created are not yet accurate enough. Further improvements will include implementing a model similar to the Nearest Neighbor algorithm and try to make use of RNN layers.  
 
 LSTM/RNN for genre prediction: We will train an LSTM using raw audio samples as features and genre labels as GT labels. The model will consist of several recurrent layers followed by linear layers. The rationale is to use the cell state (or hidden state) from the last recurrent layer as a learned embedding of the audio sample, and then use the subsequent linear layers to classify the embedding into the correct genre label.
 
