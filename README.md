@@ -51,7 +51,7 @@ When it comes from the features dataset recovered from the Spotify API, the data
 | uri              | string  | The Spotify URI for the track                                                                          |
 | valence          | float   | A measure from 0.0 to 1.0 describing the musical positiveness conveyed by a track                      |
 
-There are some features that will be useless to our analysis because they are unique or equal to every data point : type, uri, analysis_url, id and track_href are to be removed from our dataset when performing an algorithm. That leaves us with 13 features. We use a MaxMin scaler so that all of the values are within 0 and 1.
+There are some features that will be useless to our analysis because they are unique or equal to every data point : type, uri, analysis_url, id and track_href are to be removed from our dataset when performing an algorithm. That leaves us with 13 features. We use a MinMax scaler so that all of the values are within 0 and 1.
 
 We then proceeded to analyze the distribution of each feature and their correlation :
 ![distribution](https://user-images.githubusercontent.com/37664954/161640857-22656693-93c4-4046-b3f3-1bfbf5a50b5d.png)
