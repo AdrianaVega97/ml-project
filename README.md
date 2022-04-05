@@ -25,7 +25,6 @@ We used Spotify's API to recover the audiofeatures for each track. Spotify limit
 
 Genre classification: We aim to perform K-Means clustering on the selected audio features of songs. Given a set of songs and their corresponding genre label (with k genres total), we will cluster them into k clusters based on audio features in the Euclidean space. We will simply compare the distance between the audio features of new songs and the learned cluster centers to make genre predictions.
 
-Graph-based approaches for playlist completion: We will first derive the songs-playlists bipartite graph from the dataset. Then we will explore some common graph-based methods, such as Random Walk (1), Neural Graph Collaborative Filtering (NGCF) (2), and LightGCN (3), to learn the graph embeddings of songs and playlists for later prediction/recommendation use. 
 
 #### Midterm Update
 
