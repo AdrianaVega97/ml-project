@@ -102,14 +102,16 @@ Playlists used for example: #1: [1, 2, 4], #2: [3, 5, 6], #3: [7, 8]
 | Inference accuracy (top-500) | 0.4%                     | 0.0%    | 0.9%              | 0.1% |
 
 For now, we have not yet been able to achieve good results. Part of the problem is that the feature we are trying to create is very large (there is over 2M songs) and thus embeddings created are not yet accurate enough. Further improvements will include implementing a model similar to the Nearest Neighbor algorithm and try to make use of RNN layers.  
-#### More work
 
-Supervised Learning:
+#### Graph-based approach
 
 Neural network collaborative filtering for playlist completion:
 We are exploring some graph-based approaches for playlist completion: the basic idea is to first derive the songs-playlists bipartite graph from the dataset, then use  the methods from common graph neural network and collaborative filtering (NGCF) (2) to learn the graph embeddings of songs and playlists based on observed interactions and make prediction.  
 The model is built on top of GNNs, which aims to capture the collaborative signal as well as graph structure between music and playlist. The design of the network is first construct the music-playlist bipartite graph, then concatenate the embeddings of music and playlist from different levels of propagations of GNN layers to construct the final embedding of music and playlist.  For prediction, the inner product of learned playlist embeddings and music embeddings are used to calculate the preference of one playlist to a specific song. For optimization, the negative labels are unseen combinations among music and playlist while the positive labels are observed pairs of music and playlist. We tried to use 80% of the dataset for training and the rest for testing. However, the training process for this model is time consuming especially for the propagation part, by the end of the midterm due, the training process is still undergoing. Later we will try to lower the propagation level and then take advantage of other training resources to speed up the training process.
 
+#### Further work
+
+Supervised Learning:
 LSTM/RNN for genre prediction: We will train an LSTM using raw audio samples as features and genre labels as GT labels. The model will consist of several recurrent layers followed by linear layers. The rationale is to use the cell state (or hidden state) from the last recurrent layer as a learned embedding of the audio sample, and then use the subsequent linear layers to classify the embedding into the correct genre label.
 
 Sequential model for playlist completion: We will train a sequential model based on an attentive neural architecture incorporating song features (4).
