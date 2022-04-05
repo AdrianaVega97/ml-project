@@ -73,7 +73,13 @@ Nonetheless, we can observe an interesting phoenomenon when we polt our componen
 We can see a bimodal distribution in our data and we decided to investigate it further, since the original features no longer exist in the PCA space, we decided to perform a clustering algorithm and then analyse the distribution of our data for each feature, in each cluster. 
 
 #### K-Means
-We decided to perform the K-Means algorithm on our entire dataset. Since we have a very big dataset with many dimensions and K-Means is a distance based algorithm this was quite time consuming. Since we saw during the PCA implementation that there was a bimodal distribution in our data, we performed the algorithm to find 2 clusters. 
+We decided to perform the K-Means algorithm on our entire dataset. Since we have a very big dataset with many dimensions and K-Means is a distance based algorithm this was quite time consuming. 
+
+We performed the K-Means algorithm with different number of clusters and we stored the total inertia for each model to determine the optimal number of clusters with the Elbow Method. We tried to do it with the silhoutte coefficient but the calculation time was too large and our kernel timed out. The optimal number of clusters seems to be between 2 and 3 clusters.
+
+![elbow](https://user-images.githubusercontent.com/37664954/161785086-20370445-cf3a-4135-92da-393a75862227.png)
+
+Since we saw during the PCA implementation that there was a bimodal distribution in our data, we performed the algorithm to find 2 clusters. 
 
 ![kmeans_feat](https://user-images.githubusercontent.com/37664954/161646877-b8ce951b-8eef-40f2-8d1e-f76d079e7d67.png)
 
