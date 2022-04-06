@@ -115,10 +115,36 @@ Neural network collaborative filtering for playlist completion:
 We are exploring some graph-based approaches for playlist completion: the basic idea is to first derive the songs-playlists bipartite graph from the dataset, then use  the methods from common graph neural network and collaborative filtering (NGCF) (2) to learn the graph embeddings of songs and playlists based on observed interactions and make prediction.  
 The model is built on top of GNNs, which aims to capture the collaborative signal as well as graph structure between music and playlist. The design of the network is first construct the music-playlist bipartite graph, then concatenate the embeddings of music and playlist from different levels of propagations of GNN layers to construct the final embedding of music and playlist.  For prediction, the inner product of learned playlist embeddings and music embeddings are used to calculate the preference of one playlist to a specific song. For optimization, the negative labels are unseen combinations among music and playlist while the positive labels are observed pairs of music and playlist. We tried to use 80% of the dataset for training and the rest for testing. However, the training process for this model is time consuming especially for the propagation part, by the end of the midterm due, the training process is still undergoing. Later we will try to lower the propagation level and then take advantage of other training resources to speed up the training process.
 
+#### Genre classification
+
+For genre classification, the ground truth labels are obtained from [MSD Allmusic Top Genre Dataset (Top-MAGD)](http://www.ifs.tuwien.ac.at/mir/msd/download.html), a subset of Million Song Dataset. This dataset contains ground truth genre classifications of 406427 songs from the MSD in 13 genres. Below is a table of distribution of the ground truth labels over 13 genres:
+
+| Genre Name    | Number of Tracks |
+|---------------|------------------|
+| Pop/Rock      | 238786           |
+| Electronic    | 41075            |
+| Rap           | 20939            |
+| Jazz          | 17836            |
+| Latin         | 17690            |
+| R&B           | 14335            |
+| International | 14242            |
+| Country       | 11772            |
+| Reggae        | 6946             |
+| Blues         | 6836             |
+| Vocal         | 6195             |
+| Folk          | 5865             |
+| New Age       | 4010             |
+
+To establish a baseline, we created a simple classifier [SimpleRHClassifier](genre_classification/classifiers.py) with only 2 hidden layers. Layers are fully-connected with relu activation in between, and each hidden layer contains 100 neurons. The input feature is the **rhythm histogram** for each song, which is a 60-dimensional feature vector that describes general rhythmic patterns of an audio. The bins of the histogram span over modulation frequency between 0 and 10 Hz, which together forms a representation of the song's rhythmic energy. The output is a probability distribution over 13 genres that the model predicts. To get a better sense of what the rhythm histogram looks like, we created the following visualization of 16 samples randomly chosen from the dataset:
+
+![](genre_classification/figures/rh_visualization.png)
+
+We split the 406427 songs into training and testing sets by an 8:2 raio, and trained `SimpleRHClassifier` using SGD as optimizer with a learning rate of 0.0001 over 5 epochs. With this, we achieved a classification accuracy of 0.58 on the testing set, which we establish as the baseline. Training code is found [here](genre_classification/classification.ipynb).
+
 #### Further work
 
 Supervised Learning:
-LSTM/RNN for genre prediction: We will train an LSTM using raw audio samples as features and genre labels as GT labels. The model will consist of several recurrent layers followed by linear layers. The rationale is to use the cell state (or hidden state) from the last recurrent layer as a learned embedding of the audio sample, and then use the subsequent linear layers to classify the embedding into the correct genre label.
+LSTM/RNN for genre prediction: To improve from the baseline, we will train an LSTM over more advanced features. The model will consist of several recurrent layers followed by linear layers. The rationale is to use the cell state (or hidden state) from the last recurrent layer as a learned embedding of the audio sample, and then use the subsequent linear layers to classify the embedding into the correct genre label.
 
 Sequential model for playlist completion: We will train a sequential model based on an attentive neural architecture incorporating song features (4).
 
