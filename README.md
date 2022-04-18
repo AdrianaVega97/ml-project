@@ -26,7 +26,7 @@ We used Spotify's API to recover the audiofeatures for each track. Spotify limit
 Genre classification: We aim to perform K-Means clustering on the selected audio features of songs. Given a set of songs and their corresponding genre label (with k genres total), we will cluster them into k clusters based on audio features in the Euclidean space. We will simply compare the distance between the audio features of new songs and the learned cluster centers to make genre predictions.
 
 
-#### Midterm Update
+#### Final Update
 
 ##### Data Exploration
 One of the first analysis to perform on a machine learning project is to explore the dataset. Make sure the dataset is clean. That all values are in the expected formats, decide how to handle missing values and more. 
@@ -76,15 +76,11 @@ We can see a bimodal distribution in our data and we decided to investigate it f
 #### K-Means
 We decided to perform the K-Means algorithm on our entire dataset. Since we have a very big dataset with many dimensions and K-Means is a distance based algorithm this was quite time consuming. 
 
-We performed the K-Means algorithm with different number of clusters and we stored the total inertia for each model to determine the optimal number of clusters with the Elbow Method. We tried to do it with the silhoutte coefficient but the calculation time was too large and our kernel timed out. The optimal number of clusters seems to be between 2 and 3 clusters.
-
-![elbow](https://user-images.githubusercontent.com/37664954/161785086-20370445-cf3a-4135-92da-393a75862227.png)
-
 Since we saw during the PCA implementation that there was a bimodal distribution in our data, we performed the algorithm to find 2 clusters. 
 
-![kmeans_feat](https://user-images.githubusercontent.com/37664954/161646877-b8ce951b-8eef-40f2-8d1e-f76d079e7d67.png)
+![kmeans_feat](https://user-images.githubusercontent.com/37664954/163830621-315a79fc-2831-4b91-a9ae-a666abd2b8cf.png)
 
-We can see that the only feature that seems to be clearly separated by the cluster is the mode. We are still searching for ways to work around this so that we can find other clusters. Removing the feature is one option although maybe a little simplistic. 
+We can see that the only feature that seems to be clearly separated by the cluster is the mode.
 
 ### Supervised Learning
 ##### Song embeddings based on playlists
