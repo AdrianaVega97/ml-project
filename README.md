@@ -90,15 +90,14 @@ We performed KMeans with a varying number of clusters and plotted the inertia ac
 
 <img src="https://user-images.githubusercontent.com/37664954/163834569-f97393b0-a4d9-49a0-a8c2-85d5615b4c2e.png" width="500" height="300" />
 
-The optimal number of clusters seems to be between 3 and 4. This is the final result : 
+The optimal number of clusters seems to be between 3 and 4. We choose k=3 and apply the KMeans algorithm. This is the final output in the PCA space: 
 <img src="https://user-images.githubusercontent.com/37664954/163836647-9b704189-ace8-4ef1-92f8-ec56d3a10687.png" width="500" height="300" />
 
-
-We proceeded to plot the distribution of each feature, for eah cluster :
+The separation is not what we would expect, it seems to be uniformely dividing the space. To further understand what separates the clusters we proceeded to plot the distribution of each feature, for eah cluster :
 
 <img src="https://user-images.githubusercontent.com/37664954/163846480-a9743815-8fcf-4610-9ffa-9c0aad17c10c.png" width="500" height="500" />
 
-We can see that cluster 0 and cluster 1 are clearly separated in terms of energy, danceability, time signature, acousticness and loudness. Cluster 0 regroups acoustic songs, slower songs like balads whereas cluster 1 regroups dance songs, high tempo and energy : party songs. 
+We can see that cluster 0 and cluster 1 are clearly separated in terms of energy, danceability, time signature, acousticness and loudness. Cluster 0 regroups acoustic songs, slower songs like balads whereas cluster 1 regroups dance songs, high tempo and energy : party songs. Cluster 3 is not identifyiable. 
 
 We decided to try DBSCAN on our dataset. DBSCAN is a Density Based clustering method, it has the advantage of figuring out the number of clusters in the data. It has two input parameters : epsilon and MinPts. it is much more sensible to epsilon. To find the optimal value for this parameter we polot the average distance to the 4th nearest neighbor for every point in the dataset. The optimal value is at the point of maximal curvature : 
 
