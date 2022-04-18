@@ -108,7 +108,7 @@ We set epsilon=0.00075 and MinPts=10. The results are not very promising, the al
 
 <img src="https://user-images.githubusercontent.com/37664954/163857654-0a96f2f4-f77d-4556-93b7-762e63acc8e4.png" width="500" height="300" />
 
-However, there is one high density cluster 1. After analysis we can see that this cluster has very similar distribution to cluster 1 in KMeans :
+However, there is one high density cluster: cluster 1. We can see it in purple in the figure above. After analysis we can see that this cluster has very similar distribution to cluster 1 in KMeans. This leads us to believe that high energy, party songs are overwhelmingly more present in this dataset
 
 <img src="https://user-images.githubusercontent.com/37664954/163857837-29a33a9e-dc3d-4f26-b2e1-5ab11b2d69ff.png" width="500" height="500" />
 
