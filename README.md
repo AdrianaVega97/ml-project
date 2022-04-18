@@ -80,7 +80,18 @@ Since we saw during the PCA implementation that there was a bimodal distribution
 
 ![kmeans_feat](https://user-images.githubusercontent.com/37664954/163830621-315a79fc-2831-4b91-a9ae-a666abd2b8cf.png)
 
-We can see that the only feature that seems to be clearly separated by the cluster is the mode.
+We can see that the only feature that seems to be clearly separated by the cluster is the mode. We decided to remove this feature and perform clustering algorithms on the dataset. After performing PCA on our new dataset, we get a total explained variance of 53%. We sampled 5000 points and this is the visualization result of the data in the PCA space :
+
+![scatter_new_pca](https://user-images.githubusercontent.com/37664954/163833580-38ceecd7-559b-43e4-991d-68ab109cecdc.png)
+
+We performed KMeans with a varying number of clusters and plotted the inertia accordingly to select the optimal k :
+![elbow](https://user-images.githubusercontent.com/37664954/163834569-f97393b0-a4d9-49a0-a8c2-85d5615b4c2e.png)
+ The optimal number of clusters seems to be between 3 and 4. This is the final result : 
+![scatter_kmeans_pca](https://user-images.githubusercontent.com/37664954/163836647-9b704189-ace8-4ef1-92f8-ec56d3a10687.png)
+
+We proceeded to plot the distribution of each feature, for eah cluster :
+![distribution_kmeans_pca](https://user-images.githubusercontent.com/37664954/163846480-a9743815-8fcf-4610-9ffa-9c0aad17c10c.png)
+We can see that cluster 0 and cluster 1 are clearly separated in terms of energy, danceability, time signature, acousticness and loudness. Cluster 0 regroups acoustic songs, slower songs like balads whereas cluster 1 regroups dance songs, high tempo and energy : party songs. 
 
 ### Supervised Learning
 ##### Song embeddings based on playlists
