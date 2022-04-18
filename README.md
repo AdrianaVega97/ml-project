@@ -55,7 +55,10 @@ When it comes from the features dataset recovered from the Spotify API, the data
 | valence          | float   | A measure from 0.0 to 1.0 describing the musical positiveness conveyed by a track                      |
 
 There are some features that will be useless to our analysis because they are unique or equal to every data point : type, uri, analysis_url, id and track_href are to be removed from our dataset when performing an algorithm. That leaves us with 13 features. We use a MinMax scaler so that all of the values are within 0 and 1.
-![distribution](https://user-images.githubusercontent.com/37664954/163826546-e80018b0-e43b-423a-9734-0ff36b367f54.png=250x250)
+
+<img src="https://user-images.githubusercontent.com/37664954/163826546-e80018b0-e43b-423a-9734-0ff36b367f54.png" width="250" height="250" />
+
+![distribution](https://user-images.githubusercontent.com/37664954/163826546-e80018b0-e43b-423a-9734-0ff36b367f54.png)
 We then proceeded to analyze the distribution of each feature and their correlation :
 
 We can see that the mode, key and time_signature are only allowed to take few discrete values. This could be a problem when performing dimensionality reduction or any clustering algorithm. 
