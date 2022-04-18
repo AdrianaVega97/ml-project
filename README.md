@@ -62,7 +62,7 @@ We then proceeded to analyze the distribution of each feature and their correlat
 
 We can see that the mode, key and time_signature are only allowed to take few discrete values. This could be a problem when performing dimensionality reduction or any clustering algorithm. 
 
-<img src="https://user-images.githubusercontent.com/37664954/163826515-d3598b9d-bcdb-46e5-943c-fb0d703024eb.png" width="500" height="500" />
+<img src="https://user-images.githubusercontent.com/37664954/163826515-d3598b9d-bcdb-46e5-943c-fb0d703024eb.png" width="500" height="300" />
 
 We can see that some features are positively correlated : danceability and energy, energy and tempo. This was to be expected as per the descriptions above. 
 
@@ -71,7 +71,7 @@ Data visualization is very important in any project. It allows us to better unde
 
 Nonetheless, we can observe an interesting phoenomenon when we polt our components. Since our dataset is very large (>2M songs), we chose to sample 1000 points at random for visibility purposes. 
 
-<img src="https://user-images.githubusercontent.com/37664954/161643656-7eb34767-1c97-444d-8432-0bbccd16d58a.png" width="500" height="500" />
+<img src="https://user-images.githubusercontent.com/37664954/161643656-7eb34767-1c97-444d-8432-0bbccd16d58a.png" width="500" height="300" />
 
 We can see a bimodal distribution in our data and we decided to investigate it further, since the original features no longer exist in the PCA space, we decided to perform a clustering algorithm and then analyse the distribution of our data for each feature, in each cluster. 
 
@@ -80,18 +80,18 @@ We decided to perform the K-Means algorithm on our entire dataset. Since we have
 
 Since we saw during the PCA implementation that there was a bimodal distribution in our data, we performed the algorithm to find 2 clusters. 
 
-<img src="https://user-images.githubusercontent.com/37664954/163830621-315a79fc-2831-4b91-a9ae-a666abd2b8cf.png" width="500" height="500" />
+<img src="https://user-images.githubusercontent.com/37664954/163830621-315a79fc-2831-4b91-a9ae-a666abd2b8cf.png" width="500" height="300" />
 
 We can see that the only feature that seems to be clearly separated by the cluster is the mode. We decided to remove this feature and perform clustering algorithms on the dataset. After performing PCA on our new dataset, we get a total explained variance of 53%. We sampled 5000 points and this is the visualization result of the data in the PCA space :
 
-<img src="https://user-images.githubusercontent.com/37664954/163833580-38ceecd7-559b-43e4-991d-68ab109cecdc.png" width="500" height="500" />
+<img src="https://user-images.githubusercontent.com/37664954/163833580-38ceecd7-559b-43e4-991d-68ab109cecdc.png" width="500" height="300" />
 
 We performed KMeans with a varying number of clusters and plotted the inertia accordingly to select the optimal k :
 
 <img src="https://user-images.githubusercontent.com/37664954/163834569-f97393b0-a4d9-49a0-a8c2-85d5615b4c2e.png" width="500" height="300" />
 
 The optimal number of clusters seems to be between 3 and 4. This is the final result : 
-<img src="https://user-images.githubusercontent.com/37664954/163836647-9b704189-ace8-4ef1-92f8-ec56d3a10687.png" width="500" height="500" />
+<img src="https://user-images.githubusercontent.com/37664954/163836647-9b704189-ace8-4ef1-92f8-ec56d3a10687.png" width="500" height="300" />
 
 
 We proceeded to plot the distribution of each feature, for eah cluster :
@@ -99,6 +99,19 @@ We proceeded to plot the distribution of each feature, for eah cluster :
 <img src="https://user-images.githubusercontent.com/37664954/163846480-a9743815-8fcf-4610-9ffa-9c0aad17c10c.png" width="500" height="500" />
 
 We can see that cluster 0 and cluster 1 are clearly separated in terms of energy, danceability, time signature, acousticness and loudness. Cluster 0 regroups acoustic songs, slower songs like balads whereas cluster 1 regroups dance songs, high tempo and energy : party songs. 
+
+We decided to try DBSCAN on our dataset. DBSCAN is a Density Based clustering method, it has the advantage of figuring out the number of clusters in the data. It has two input parameters : epsilon and MinPts. it is much more sensible to epsilon. To find the optimal value for this parameter we polot the average distance to the 4th nearest neighbor for every point in the dataset. The optimal value is at the point of maximal curvature : 
+
+<img src="https://user-images.githubusercontent.com/37664954/163857236-ae69f6f8-ef4c-4832-854a-261c826608ec.png" width="500" height="300" />
+
+We set epsilon=0.00075 and MinPts=10. The results are not very promising, the algorithm doesn't handle varying density clusters very well, here we have over 10000 clusters. After dropping the noise points, this is DBSCAN output :
+
+<img src="https://user-images.githubusercontent.com/37664954/163857654-0a96f2f4-f77d-4556-93b7-762e63acc8e4.png" width="500" height="300" />
+
+However, there is one high density cluster 1. After analysis we can see that this cluster has very similar distribution to cluster 1 in KMeans :
+
+<img src="https://user-images.githubusercontent.com/37664954/163857837-29a33a9e-dc3d-4f26-b2e1-5ab11b2d69ff.png" width="500" height="500" />
+
 
 ### Supervised Learning
 ##### Song embeddings based on playlists
