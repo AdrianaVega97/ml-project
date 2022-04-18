@@ -88,12 +88,14 @@ We can see that the only feature that seems to be clearly separated by the clust
 
 We performed KMeans with a varying number of clusters and plotted the inertia accordingly to select the optimal k :
 
-<img src="https://user-images.githubusercontent.com/37664954/163834569-f97393b0-a4d9-49a0-a8c2-85d5615b4c2e.png" width="300" height="300" />
+<img src="https://user-images.githubusercontent.com/37664954/163834569-f97393b0-a4d9-49a0-a8c2-85d5615b4c2e.png" width="500" height="300" />
 
 The optimal number of clusters seems to be between 3 and 4. This is the final result : 
 <img src="https://user-images.githubusercontent.com/37664954/163836647-9b704189-ace8-4ef1-92f8-ec56d3a10687.png" width="500" height="500" />
 
+
 We proceeded to plot the distribution of each feature, for eah cluster :
+
 <img src="https://user-images.githubusercontent.com/37664954/163846480-a9743815-8fcf-4610-9ffa-9c0aad17c10c.png" width="500" height="500" />
 
 We can see that cluster 0 and cluster 1 are clearly separated in terms of energy, danceability, time signature, acousticness and loudness. Cluster 0 regroups acoustic songs, slower songs like balads whereas cluster 1 regroups dance songs, high tempo and energy : party songs. 
