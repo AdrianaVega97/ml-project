@@ -92,6 +92,7 @@ The optimal number of clusters seems to be between 3 and 4. This is the final re
 
 We proceeded to plot the distribution of each feature, for eah cluster :
 ![distribution_kmeans_pca](https://user-images.githubusercontent.com/37664954/163846480-a9743815-8fcf-4610-9ffa-9c0aad17c10c.png)
+
 We can see that cluster 0 and cluster 1 are clearly separated in terms of energy, danceability, time signature, acousticness and loudness. Cluster 0 regroups acoustic songs, slower songs like balads whereas cluster 1 regroups dance songs, high tempo and energy : party songs. 
 
 ### Supervised Learning
