@@ -56,15 +56,13 @@ When it comes from the features dataset recovered from the Spotify API, the data
 
 There are some features that will be useless to our analysis because they are unique or equal to every data point : type, uri, analysis_url, id and track_href are to be removed from our dataset when performing an algorithm. That leaves us with 13 features. We use a MinMax scaler so that all of the values are within 0 and 1.
 
-<img src="https://user-images.githubusercontent.com/37664954/163826546-e80018b0-e43b-423a-9734-0ff36b367f54.png" width="250" height="250" />
+<img src="https://user-images.githubusercontent.com/37664954/163826546-e80018b0-e43b-423a-9734-0ff36b367f54.png" width="500" height="500" />
 
-![distribution](https://user-images.githubusercontent.com/37664954/163826546-e80018b0-e43b-423a-9734-0ff36b367f54.png)
 We then proceeded to analyze the distribution of each feature and their correlation :
 
 We can see that the mode, key and time_signature are only allowed to take few discrete values. This could be a problem when performing dimensionality reduction or any clustering algorithm. 
 
-![correlation](https://user-images.githubusercontent.com/37664954/163826515-d3598b9d-bcdb-46e5-943c-fb0d703024eb.png)
-
+<img src="https://user-images.githubusercontent.com/37664954/163826515-d3598b9d-bcdb-46e5-943c-fb0d703024eb.png" width="500" height="500" />
 
 We can see that some features are positively correlated : danceability and energy, energy and tempo. This was to be expected as per the descriptions above. 
 
@@ -73,7 +71,8 @@ Data visualization is very important in any project. It allows us to better unde
 
 Nonetheless, we can observe an interesting phoenomenon when we polt our components. Since our dataset is very large (>2M songs), we chose to sample 1000 points at random for visibility purposes. 
 
-![pca_scatter](https://user-images.githubusercontent.com/37664954/161643656-7eb34767-1c97-444d-8432-0bbccd16d58a.png)
+<img src="https://user-images.githubusercontent.com/37664954/161643656-7eb34767-1c97-444d-8432-0bbccd16d58a.png" width="500" height="500" />
+
 We can see a bimodal distribution in our data and we decided to investigate it further, since the original features no longer exist in the PCA space, we decided to perform a clustering algorithm and then analyse the distribution of our data for each feature, in each cluster. 
 
 #### K-Means
@@ -81,20 +80,21 @@ We decided to perform the K-Means algorithm on our entire dataset. Since we have
 
 Since we saw during the PCA implementation that there was a bimodal distribution in our data, we performed the algorithm to find 2 clusters. 
 
-![kmeans_feat](https://user-images.githubusercontent.com/37664954/163830621-315a79fc-2831-4b91-a9ae-a666abd2b8cf.png)
+<img src="https://user-images.githubusercontent.com/37664954/163830621-315a79fc-2831-4b91-a9ae-a666abd2b8cf.png" width="500" height="500" />
 
 We can see that the only feature that seems to be clearly separated by the cluster is the mode. We decided to remove this feature and perform clustering algorithms on the dataset. After performing PCA on our new dataset, we get a total explained variance of 53%. We sampled 5000 points and this is the visualization result of the data in the PCA space :
 
-![scatter_new_pca](https://user-images.githubusercontent.com/37664954/163833580-38ceecd7-559b-43e4-991d-68ab109cecdc.png)
+<img src="https://user-images.githubusercontent.com/37664954/163833580-38ceecd7-559b-43e4-991d-68ab109cecdc.png" width="500" height="500" />
 
 We performed KMeans with a varying number of clusters and plotted the inertia accordingly to select the optimal k :
-![elbow](https://user-images.githubusercontent.com/37664954/163834569-f97393b0-a4d9-49a0-a8c2-85d5615b4c2e.png)
+
+<img src="https://user-images.githubusercontent.com/37664954/163834569-f97393b0-a4d9-49a0-a8c2-85d5615b4c2e.png" width="300" height="300" />
 
 The optimal number of clusters seems to be between 3 and 4. This is the final result : 
-![scatter_kmeans_pca](https://user-images.githubusercontent.com/37664954/163836647-9b704189-ace8-4ef1-92f8-ec56d3a10687.png)
+<img src="https://user-images.githubusercontent.com/37664954/163836647-9b704189-ace8-4ef1-92f8-ec56d3a10687.png" width="500" height="500" />
 
 We proceeded to plot the distribution of each feature, for eah cluster :
-![distribution_kmeans_pca](https://user-images.githubusercontent.com/37664954/163846480-a9743815-8fcf-4610-9ffa-9c0aad17c10c.png)
+<img src="https://user-images.githubusercontent.com/37664954/163846480-a9743815-8fcf-4610-9ffa-9c0aad17c10c.png" width="500" height="500" />
 
 We can see that cluster 0 and cluster 1 are clearly separated in terms of energy, danceability, time signature, acousticness and loudness. Cluster 0 regroups acoustic songs, slower songs like balads whereas cluster 1 regroups dance songs, high tempo and energy : party songs. 
 
