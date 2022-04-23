@@ -128,6 +128,8 @@ The dataset contains a field named "popularity" ranked in a scale of 0 to 100. W
 |Classic    |MKTO|86|
 |In The End |Linkin Park|86|
 
+We can see that in addition to being fatser, high tempo songs they are also very popular. This cluster could also be tied to the songs popularity. But we do not have time within the time frame for this project to pursue this idea. 
+
 ### Supervised Learning
 ##### Song embeddings based on playlists
 
