@@ -111,6 +111,21 @@ However, there is one high density cluster: cluster 1. We can see it in purple i
 
 <img src="https://user-images.githubusercontent.com/37664954/163857837-29a33a9e-dc3d-4f26-b2e1-5ab11b2d69ff.png" width="500" height="500" />
 
+In order to confirm our hypothesis, we take all the ids from the songs in this high density cluster and we match the ids to the track information. 
+The dataset contains a field named "popularity" ranked in a scale of 0 to 100. We sort the songs from most to least popular and the top 10 most popular songs in this cluster are :
+
+|Song Title | Artist | Popularity |
+|-----------|--------|------------|
+|Infinity   |Jaymes Young| 95 |
+|Sweater Weather|The Neighbourhood| 92|
+|Dandelions |Ruth B.|91|
+|Without Me |Eminem|89|
+|Ginseng Strip 2002|Yung Lean	| 88|
+|The Real Slim Shady|Eminem|88|
+|The Nights |Avicii| 88|
+|goosebumps |Travis Scott	|87|
+|Classic    |MKTO|86|
+|In The End |Linkin Park|86|
 
 ### Supervised Learning
 ##### Song embeddings based on playlists
