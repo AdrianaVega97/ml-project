@@ -91,6 +91,7 @@ We performed KMeans with a varying number of clusters and plotted the inertia ac
 <img src="https://user-images.githubusercontent.com/37664954/163834569-f97393b0-a4d9-49a0-a8c2-85d5615b4c2e.png" width="500" height="300" />
 
 The optimal number of clusters seems to be between 3 and 4. We choose k=3 and apply the KMeans algorithm. This is the final output in the PCA space: 
+
 <img src="https://user-images.githubusercontent.com/37664954/163836647-9b704189-ace8-4ef1-92f8-ec56d3a10687.png" width="500" height="300" />
 
 The separation is not what we would expect, it seems to be uniformely dividing the space. To further understand what separates the clusters we proceeded to plot the distribution of each feature, for eah cluster :
