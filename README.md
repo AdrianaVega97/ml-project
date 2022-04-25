@@ -142,7 +142,9 @@ Evaluation:
 To evaluate the performance of our model, we adopt the metrics from Spotify RecSys rules [2]: the R-Precision, which is a metric to calculate the number of retrieved relevant tracks divided by the number of known relevant tracks (regardless of the magnitude of relevance). We split the dataset into training and test datasets by the ratio of 0.8 and 0.2, that is, for every playlist, the first 80 percent is used for training and the last 20 percent of the playlist is used for testing. To reduce the effect of the length of the testing dataset, we dynamically chose the recommended number K as a multiple of the length of the test dataset. The final average r-precision score for our dataset is 0.17. 
 
 We also use a visualization approach to evaluate the recommendation result from our matrix factorization method. The goal of this visualization is to see if the latent features learned by matrix factorization are aligned with the explicit feature space. We first plot songs with the PCA algorithm on the feature vectors of the songs, which includes those features listed in the data exploration section. For the sake of space, we randomly chose 10 playlists to examine the results. In the following plot, each dot is one song with a 2D dimension reduction from its explicit feature vector. The training dataset for the playlist is color-coded in purple, the test dataset is in red and the recommendation made by the algorithm is in green. From the visualization, we can see that the recommendation results are spatially clustered with the training and testing songs, which demonstrates the ability of collaborative filtering and matrix factorization to learn the representative hidden feature from the interaction matrix (i.e. rating matrix). 
-<img src="https://user-images.githubusercontent.com/37664954/163857837-29a33a9e-dc3d-4f26-b2e1-5ab11b2d69ff.png" width="500" height="500" />
+
+<img width="1780" alt="MF2" src="https://user-images.githubusercontent.com/59711405/165016584-d8437a06-41ca-417d-9ee0-2d8ec993ab6f.png">
+
 
 ### Supervised Learning
 ##### Song embeddings based on playlists
