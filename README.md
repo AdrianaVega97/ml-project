@@ -144,7 +144,7 @@ Playlists used for example: #1: [1, 2, 4], #2: [3, 5, 6], #3: [7, 8]
 | Last song                                                                                                                  | Predicting a song_id of the playlist based on the other ones                                             |   [1,4] | 2
 | Last song with aggregate                                                                                                   | Predicting a song_id of the playlist based on the other ones but here embeddings of input are aggregated |   [6,5] | 3
 
-##### Results
+##### Custom Embeddings Results
 
 | Metrics                      | Discriminative model     | Binary Discriminative model | Last Song model | Last song with aggregate |
 |------------------------------|--------------------------|-------- | --- | --- |
@@ -153,6 +153,47 @@ Playlists used for example: #1: [1, 2, 4], #2: [3, 5, 6], #3: [7, 8]
 | Inference accuracy (top-500) | 0.4%                     | 0.0%    | 0.9%              | 0.1% |
 
 For now, we have not yet been able to achieve good results. Part of the problem is that the feature we are trying to create is very large (there is over 2M songs) and thus embeddings created are not yet accurate enough. Further improvements will include implementing a model similar to the Nearest Neighbor algorithm and try to make use of RNN layers.  
+## Playlist completion
+After trying to create embeddings usable by a Nearest Neighbor algorithm without success, we went to a more simple approach of directly predicting next songs in the playlists.
+All work here has been performed with Google Colab Pro.
+### Models
+We tested 3 different Neural Networks architecture that are commonly used, that are made of (1) an Embedding layer, (2) a Feature extraction layer and (3) a Classifier layer.
+Models differ by their feature extraction layer:
+- Conv Model: we used a convolutional layer with a kernel size of 5
+- RNN Model: we used a bidirectional GRU layer
+- Transformer Model: We used a Transformer Encoder with 2 Multihead Attention with 4 heads
+
+Embedding layer has a dimension of 512 and the classifier layer is two fully connected layers with a hidden size of 512.
+### Data preparation
+
+We have had a lot of compromises to do with our data for usability and efficiency reason.
+1. First, out of the 1 million original playlist, we could only use 400k for training because more would not fit into memory. This was randomly sampled.
+2. In 400k playlists we had over 1.6 million unique songs. This was raising 2 problems: as we will see later we create an Embedding layer. Such Embedding matrix would take $n\_songs\times embedding\_size \times float64 memory = 1.6\times 10^6 \times 512 \times 8 bytes = 6.5 GB$ memory. This is more than half half of the GPU RAM on Colab (12GB). Second problem is that if we consider each song as a potential class, it results in a classification task with too many labels. To tackle both these issues, we chose to select the 50k songs that appeared the most in the playlists.
+3. Resulting from previous point, we removed all songs that are not in the top 50k from the playlists. We removed completely all playlists that had a new size less than 5.
+4. Our models will require a fixed input size (known as padding size). To build our dataset, we select randomly a label, take a sample of maximum padding size of the other songs as input, and eventually pad it to the desired padding size if needed. Since we have randomness, we rebuild the dataset at each epoch to prevent overfitting.
+
+
+### Experimental settings
+To train these networks we used an Adam optimizer with:
+- 20 epochs
+- a batch size of 64
+- a learning rate of 1e-4
+- a Cross Entropy Loss
+
+### Results
+
+#### Training
+<img src="playlist-completion-losses.png">
+
+#### Models
+
+|                  | Conv Model | RNN Model | Transformer Model |
+|------------------|------------|-----------|-------------------|
+| # of parameters  | 53M        | 60M       | 352M              |
+| Final Test loss  | 9.502      | 10.111    | 11.328            |
+| Top-100 accuracy | 15.5%      | 0.5%      | 13.4%             |
+| Top-500 accuracy | 31.4%      | 2%        | 28.1%             |
+
 
 #### Graph-based approach
 
