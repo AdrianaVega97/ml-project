@@ -183,7 +183,9 @@ To train these networks we used an Adam optimizer with:
 ### Results
 
 #### Training
-<img src="playlist-completion-losses.png">
+
+![playlist-completion-losses](https://user-images.githubusercontent.com/39535844/165012425-f742f207-1001-4b73-a89f-b9907a350dc0.png)
+
 
 #### Models
 
