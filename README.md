@@ -179,6 +179,7 @@ After trying to create embeddings usable by a Nearest Neighbor algorithm without
 All work here has been performed with Google Colab Pro.
 
 ##### Models
+
 We tested 3 different Neural Networks architecture that are commonly used, that are made of (1) an Embedding layer, (2) a Feature extraction layer and (3) a Classifier layer.
 Models differ by their feature extraction layer:
 - Conv Model: we used a convolutional layer with a kernel size of 5
@@ -186,6 +187,7 @@ Models differ by their feature extraction layer:
 - Transformer Model: We used a Transformer Encoder with 2 Multihead Attention with 4 heads
 
 Embedding layer has a dimension of 512 and the classifier layer is two fully connected layers with a hidden size of 512.
+
 ##### Data preparation
 
 We have had a lot of compromises to do with our data for usability and efficiency reason.
@@ -196,6 +198,7 @@ We have had a lot of compromises to do with our data for usability and efficienc
 
 
 ##### Experimental settings
+
 To train these networks we used an Adam optimizer with:
 - 20 epochs
 - a batch size of 64
@@ -299,12 +302,21 @@ Essentially, it is 3 convolution layers with max-pooling, batch normalization, a
 
 
 ## Future work
-### Unsupervised Learning
+
+### Collaborative Filtering Playlist Completion
 
 Even though the visualization results show the rating matrix created from the existing playlists can learn meaningful representations of songs, there are certain problems with binary encoding for the rating matrix. First, the size of the rating matrix is not generalized, which is defined by the number of unique songs and playlists. This may result in storage and computing costs when processing the sparse matrix. Second, the expression of only the interaction binary encodes is limited, combining other implicit features to the binary matrix may increase the model performance. Another limitation of our model is the assumption we made when creating the rating matrix, where we assume the absence of a song in the playlist means a negative interaction, which may not always hold true in reality, because a playlist is not supposed to contain all the songs from the same category due to the limited length. Future improvements to this can be adding constraints to negative and positive interactions instead of only considering the containing relationship. Moreover, in order to learn dense representations of the collaborative filtering network, we also consider graph neural network based approaches, such as NGCF(Graph Neural Network and Collaborative Filtering)(2). Similar to our rating matrices here, the basic idea of NGCF is to first derive the songs-playlists bipartite graph from the dataset, then use the graph network methods such as random work to generate the embeddings of songs and playlists for training, and the output dense embeddings can be used for downstream tasks.
 
+### CNN Genre Classification
+
+The CNN classifier performed well compared to the baseline, but it was trained on the raw rhythmic pattern features. In order to further improve prediction accuracy, there are several things that can be done. Specifically,
+1. Preprocessing on the rhythmic pattern features can make certain patterns more prominent (i.e. easier to distinguish by the network).
+2. Adding more convolutional layers and introduce more filters per layer - this will, however, require additional computational power that we don't possess.
+
+
 ## Conclusion
-Our project has two goals - genre classification and playlist completion. We will compare the results of different models that pertain to the same task based on their performance in terms of their precision, accuracy, and other metrics. These evaluations will help us understand what works the best.
+
+In our project, we have compared various models and approaches, unsupervised and supervised alike, that pertain to the tasks of playlist completion and music genre prediction. We based our comparisons on precision, accuracy, and other metrics, achieving admirable results. Our analysis and discussion of the results serve as valuable resources to future data scientist who intend to explore the same topic.
 
 ## References
 1. van Niedek, Timo, and Arjen P. de Vries. "Random walk with restart for automatic playlist continuation and query-specific adaptations." Proceedings of the ACM Recommender Systems Challenge 2018. 2018. 1-6.
