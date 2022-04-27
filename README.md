@@ -218,7 +218,7 @@ To train these networks we used an Adam optimizer with:
 
 2 Models stand out: the convolution and the transformer ones. The transformer one could be improved more by training more epochs as we see the test loss keep reducing (but we wanted to evaluate and compare the models on the same hyper parameters). We could also improve them by adding more depths in the feature extraction layer.
 
-But the results are already quite interesting. I have tested myself with my own playlists and I found the results satisfying. Some outliers were predicted but the models had mostly recommended me songs that were in concert with my playlist.  
+But the results are already quite interesting. We have tested with our personal playlists and found the results satisfying. Some outliers were predicted but the models had mostly recommended me songs that were in concert with my playlist.  
 
 #### Approach 3 - Graph based (Aborted)
 
@@ -295,9 +295,11 @@ Essentially, it is 3 convolution layers with max-pooling, batch normalization, a
 
 ![](genre_classification/figures/loss_accuracy.png)
 
-## Future work
 
-**Todo**
+## Future work
+### Unsupervised Learning
+
+Even though the visualization results show the rating matrix created from the existing playlists can learn meaningful representations of songs, there are certain problems with binary encoding for the rating matrix. First, the size of the rating matrix is not generalized, which is defined by the number of unique songs and playlists. This may result in storage and computing costs when processing the sparse matrix. Second, the expression of only the interaction binary encodes is limited, combining other implicit features to the binary matrix may increase the model performance. Another limitation of our model is the assumption we made when creating the rating matrix, where we assume the absence of a song in the playlist means a negative interaction, which may not always hold true in reality, because a playlist is not supposed to contain all the songs from the same category due to the limited length. Future improvements to this can be adding constraints to negative and positive interactions instead of only considering the containing relationship. Moreover, in order to learn dense representations of the collaborative filtering network, we also consider graph neural network based approaches, such as NGCF(Graph Neural Network and Collaborative Filtering)(2). Similar to our rating matrices here, the basic idea of NGCF is to first derive the songs-playlists bipartite graph from the dataset, then use the graph network methods such as random work to generate the embeddings of songs and playlists for training, and the output dense embeddings can be used for downstream tasks.
 
 ## Conclusion
 Our project has two goals - genre classification and playlist completion. We will compare the results of different models that pertain to the same task based on their performance in terms of their precision, accuracy, and other metrics. These evaluations will help us understand what works the best.
