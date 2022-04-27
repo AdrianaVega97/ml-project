@@ -11,27 +11,25 @@ Spotify has since become the most popular streaming music service, boasting more
 We wish to solve two separate but related problems. First, we will build a music genre classifier that classifies a track based on its audio features.  Next, we aim to build a recommendation system that would recommend songs to complete a playlist (given a list of songs already in the playlist, we predict the rest). The ground truth labels for both are provided by Spotify's Million Playlist Dataset and API. 
 
 ## Methods
-### Dataset
-We will use <a href="https://www.aicrowd.com/challenges/spotify-million-playlist-dataset-challenge" title="MPD">The Million Playlist Dataset (MPD)</a>, a dataset of 1 million playlists from Spotify. In this dataset, each playlist contains a list of song IDs and general information about the song. Using Spotify's [API](https://developer.spotify.com/documentation/web-api/reference/#/operations/get-several-audio-features), we will retrieve precomputed audio features such as `liveness`, `loudness`, `energy`, etc., for supervised and unsupervised learning tasks. In addition, we will use Spotify's API to retrieve raw audio samples of a subset of songs. 
-#### Midterm Update 
 
-##### Data Collection
+### Dataset
+
+We will use <a href="https://www.aicrowd.com/challenges/spotify-million-playlist-dataset-challenge" title="MPD">The Million Playlist Dataset (MPD)</a>, a dataset of 1 million playlists from Spotify. In this dataset, each playlist contains a list of song IDs and general information about the song. Using Spotify's [API](https://developer.spotify.com/documentation/web-api/reference/#/operations/get-several-audio-features), we will retrieve precomputed audio features such as `liveness`, `loudness`, `energy`, etc., for supervised and unsupervised learning tasks. In addition, we will use Spotify's API to retrieve raw audio samples of a subset of songs.
+
+#### Data Collection
 
 We downloaded the Million Playlist Dataset. We had to do some data pre processing because the dataset is very large and there were some information that we demmed not useful. Like the creation date of the playlist and the number of songs per playlist. We figured they would be redundant. We stored them as JSON files in our colab environment so everyone could have access to them. We kept only the tracklist for each playlist. 
 
 We used Spotify's API to recover the audiofeatures for each track. Spotify limits the number of requests one can make per day, since our dataset contains over 2 million tracks, this took some time to gather, even with multiple developper accounts. We also acquiered artist information, like the different genres one artist is assigned to. However, we could not use this yet because we are interested in the genre for a particular track. We know that there is the [tagtraum genre annotations for the Million Song Dataset](https://www.tagtraum.com/msd_genre_datasets.html) which contains manual annotations for the genre of a particular track. This is a work in progress, it could be very helpful four our clustering task.
 
-### Unsupervised Learning
+### Unsupervised Learning Part 1 - Dataset & feature exploration
 
-Genre classification: We aim to perform K-Means clustering on the selected audio features of songs. Given a set of songs and their corresponding genre label (with k genres total), we will cluster them into k clusters based on audio features in the Euclidean space. We will simply compare the distance between the audio features of new songs and the learned cluster centers to make genre predictions.
+We have performed K-Means and PCA on some features of the dataset to better understand how they might be used to achieve our tasks of playlist completion and music genre prediction.
 
-
-#### Final Update
-
-##### Data Exploration
+#### Miscellaneous analytics
 One of the first analysis to perform on a machine learning project is to explore the dataset. Make sure the dataset is clean. That all values are in the expected formats, decide how to handle missing values and more. 
 
-When it comes from the features dataset recovered from the Spotify API, the dataset is very clean with no missing values. The table below is a brief description of each feature according to the Spotify documentation.
+When it comes from the feature dataset recovered from the Spotify API, the dataset is very clean with no missing values. The table below is a brief description of each feature according to the Spotify documentation.
 
 | Feature          | Type    |  Description                                                                                           |
 | ---------------- | ------- | ------------------------------------------------------------------------------------------------------ |
@@ -130,8 +128,10 @@ The dataset contains a field named "popularity" ranked in a scale of 0 to 100. W
 
 We can see that in addition to being fatser, high tempo songs they are also very popular. This cluster could also be tied to the songs popularity. But we do not have time within the time frame for this project to pursue this idea. 
 
-#### Unsupervised Learning for Playlist Completion 
-##### Collaborative Filtering and Matrix Factorization
+### Unsupervised Learning Part 2 - Playlist completion
+
+#### Collaborative Filtering and Matrix Factorization
+
 Collaborative Filtering is a commonly used technique in recommendation systems. For example, in the Netflix Prize recommendation competition, a recommendation system based on Collaborative Filtering and matrix factorization outperforms other algorithms and won first place. A lot of famous platforms use Collaborative Filtering as a part of their recommendation systems, such as Youtube and Amazon. The basic idea is to generate the latent representation of users and items from the interplay matrix among them based on the rationale that users with similar tastes would show interest in similar items. The same settings are given in our music recommendation task for the playlist continuous, where we can see the playlist as a series of positive (such as “likes”, giving high ratings, etc.) user interactions on the items (i.e. songs). The goal of our system is to recommend K songs for a given playlist. In our system, the users are the playlists and the items are the songs. 
 
 First, we extract a binary “rating matrix” M(dimension as number of playlists * number of unique songs) from the existing 1,000,000 playlists. For each element m<sub>ij</sub> of M, a value of 1 means that the playlist i contains the song j, otherwise the value will be 0. Here the implicit knowledge is that if a playlist does not contain a song means a negative interaction (such as “dislikes”, giving low ratings, etc.) among them.  When the matrix is ready, we then apply matrix factorization to it. 
@@ -146,8 +146,9 @@ We also use a visualization approach to evaluate the recommendation result from 
 <img width="1780" alt="MF2" src="https://user-images.githubusercontent.com/59711405/165016584-d8437a06-41ca-417d-9ee0-2d8ec993ab6f.png">
 
 
-### Supervised Learning
-##### Song embeddings based on playlists
+### Supervised Learning Part 1 - Playlist Completion
+
+#### Approach 1 - Song Embedding (Failed)
 
 The idea of this approach is to produce embeddings for each song, and run inference with a Nearest Neighbor search, using an aggregate of the embeddings as the query to find potential new candidates to fill the playlists. Each model is trained using an Embedding layer and a network on various tasks hoping to create interesting features for the songs (the Embedding layer). Data used to train them is simply the playlists data.
 
@@ -160,7 +161,7 @@ Playlists used for example: #1: [1, 2, 4], #2: [3, 5, 6], #3: [7, 8]
 | Last song                                                                                                                  | Predicting a song_id of the playlist based on the other ones                                             |   [1,4] | 2
 | Last song with aggregate                                                                                                   | Predicting a song_id of the playlist based on the other ones but here embeddings of input are aggregated |   [6,5] | 3
 
-##### Custom Embeddings Results
+##### Custom embeddings results
 
 | Metrics                      | Discriminative model     | Binary Discriminative model | Last Song model | Last song with aggregate |
 |------------------------------|--------------------------|-------- | --- | --- |
@@ -169,10 +170,13 @@ Playlists used for example: #1: [1, 2, 4], #2: [3, 5, 6], #3: [7, 8]
 | Inference accuracy (top-500) | 0.4%                     | 0.0%    | 0.9%              | 0.1% |
 
 For now, we have not yet been able to achieve good results. Part of the problem is that the feature we are trying to create is very large (there is over 2M songs) and thus embeddings created are not yet accurate enough. Further improvements will include implementing a model similar to the Nearest Neighbor algorithm and try to make use of RNN layers.  
-### Playlist completion
+
+#### Approach 2 - CNN, RNN, Transformer
+
 After trying to create embeddings usable by a Nearest Neighbor algorithm without success, we went to a more simple approach of directly predicting next songs in the playlists.
 All work here has been performed with Google Colab Pro.
-#### Models
+
+##### Models
 We tested 3 different Neural Networks architecture that are commonly used, that are made of (1) an Embedding layer, (2) a Feature extraction layer and (3) a Classifier layer.
 Models differ by their feature extraction layer:
 - Conv Model: we used a convolutional layer with a kernel size of 5
@@ -180,7 +184,7 @@ Models differ by their feature extraction layer:
 - Transformer Model: We used a Transformer Encoder with 2 Multihead Attention with 4 heads
 
 Embedding layer has a dimension of 512 and the classifier layer is two fully connected layers with a hidden size of 512.
-#### Data preparation
+##### Data preparation
 
 We have had a lot of compromises to do with our data for usability and efficiency reason.
 1. First, out of the 1 million original playlist, we could only use 400k for training because more would not fit into memory. This was randomly sampled.
@@ -189,7 +193,7 @@ We have had a lot of compromises to do with our data for usability and efficienc
 4. Our models will require a fixed input size (known as padding size). To build our dataset, we select randomly a label, take a sample of maximum padding size of the other songs as input, and eventually pad it to the desired padding size if needed. Since we have randomness, we rebuild the dataset at each epoch to prevent overfitting.
 
 
-#### Experimental settings
+##### Experimental settings
 To train these networks we used an Adam optimizer with:
 - 20 epochs
 - a batch size of 64
@@ -214,14 +218,17 @@ To train these networks we used an Adam optimizer with:
 
 2 Models stand out: the convolution and the transformer ones. The transformer one could be improved more by training more epochs as we see the test loss keep reducing (but we wanted to evaluate and compare the models on the same hyper parameters). We could also improve them by adding more depths in the feature extraction layer.
 
-But the results are already quite interesting. I have tested myself with my own playlists and I found the results satisfying. Some outliers were predicted but the models had mostly recommended me songs that were in adequation with my playlist.  
-#### Graph-based approach
+But the results are already quite interesting. I have tested myself with my own playlists and I found the results satisfying. Some outliers were predicted but the models had mostly recommended me songs that were in concert with my playlist.  
 
-Neural network collaborative filtering for playlist completion:
-We are exploring some graph-based approaches for playlist completion: the basic idea is to first derive the songs-playlists bipartite graph from the dataset, then use  the methods from common graph neural network and collaborative filtering (NGCF) (2) to learn the graph embeddings of songs and playlists based on observed interactions and make prediction.  
-The model is built on top of GNNs, which aims to capture the collaborative signal as well as graph structure between music and playlist. The design of the network is first construct the music-playlist bipartite graph, then concatenate the embeddings of music and playlist from different levels of propagations of GNN layers to construct the final embedding of music and playlist.  For prediction, the inner product of learned playlist embeddings and music embeddings are used to calculate the preference of one playlist to a specific song. For optimization, the negative labels are unseen combinations among music and playlist while the positive labels are observed pairs of music and playlist. We tried to use 80% of the dataset for training and the rest for testing. However, the training process for this model is time consuming especially for the propagation part, by the end of the midterm due, the training process is still undergoing. Later we will try to lower the propagation level and then take advantage of other training resources to speed up the training process.
+#### Approach 3 - Graph based (Aborted)
 
-### Genre classification
+We have explored some graph-based approaches for playlist completion, one of which is Neural network collaborative filtering. The basic idea is to first derive the songs-playlists bipartite graph from the dataset, then use the methods from common graph neural network and collaborative filtering (NGCF) (2) to learn the graph embeddings of songs and playlists based on observed interactions and make prediction.  
+
+The model is built on top of GNNs, which aims to capture the collaborative signal as well as graph structure between music and playlist. The design of the network is first construct the music-playlist bipartite graph, then concatenate the embeddings of music and playlist from different levels of propagations of GNN layers to construct the final embedding of music and playlist.  For prediction, the inner product of learned playlist embeddings and music embeddings are used to calculate the preference of one playlist to a specific song. For optimization, the negative labels are unseen combinations among music and playlist while the positive labels are observed pairs of music and playlist. We tried to use 80% of the dataset for training and the rest for testing. However, the training process for this model is time-consuming especially for the propagation part, by the end of the midterm due, the training process is still undergoing.
+
+Eventually, we ended up aborting this approach due to infeasibility.
+
+### Supervised Learning Part 2 - Music genre classification
 
 For genre classification, the ground truth labels are obtained from [MSD Allmusic Top Genre Dataset (Top-MAGD)](http://www.ifs.tuwien.ac.at/mir/msd/download.html), a subset of Million Song Dataset. This dataset contains ground truth genre classifications of 406427 songs from the MSD in 13 genres. Below is a table of distribution of the ground truth labels over 13 genres:
 
@@ -251,7 +258,7 @@ With the baseline classifier in-place, we moved on to train a far more complex C
 
 ![](genre_classification/figures/rp_visualization.png)
 
-As seen, there is clearly a better chance of classifying the correct genre based on this 2D feature. We designed a complex CNN network to classify genres based on feature. The network architecture can be found in the `RHClassifier` class of [classifiers.py](genre_classification/classifiers.py). Below is a schematics of the architecture:
+As seen, there is clearly a better chance of classifying the correct genre based on this 2D feature. We designed a complex CNN network to classify genres based on this feature. The network architecture can be found in the `RHClassifier` class of [classifiers.py](genre_classification/classifiers.py). Below is a schematics of the architecture:
 
 ```
 -----------------------------------------------------------------------
@@ -288,13 +295,9 @@ Essentially, it is 3 convolution layers with max-pooling, batch normalization, a
 
 ![](genre_classification/figures/loss_accuracy.png)
 
-#### Further work
+## Future work
 
-Supervised Learning:
-
-Sequential model for playlist completion: We will train a sequential model based on an attentive neural architecture incorporating song features (4).
-
-Graph-based approach for playlist completion: We will train GraphSAGE (5) for playlist completion.
+**Todo**
 
 ## Conclusion
 Our project has two goals - genre classification and playlist completion. We will compare the results of different models that pertain to the same task based on their performance in terms of their precision, accuracy, and other metrics. These evaluations will help us understand what works the best.
