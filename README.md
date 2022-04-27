@@ -26,7 +26,7 @@ We used Spotify's API to recover the audiofeatures for each track. Spotify limit
 Genre classification: We aim to perform K-Means clustering on the selected audio features of songs. Given a set of songs and their corresponding genre label (with k genres total), we will cluster them into k clusters based on audio features in the Euclidean space. We will simply compare the distance between the audio features of new songs and the learned cluster centers to make genre predictions.
 
 
-#### Midterm Update
+#### Final Update
 
 ##### Data Exploration
 One of the first analysis to perform on a machine learning project is to explore the dataset. Make sure the dataset is clean. That all values are in the expected formats, decide how to handle missing values and more. 
@@ -56,11 +56,13 @@ When it comes from the features dataset recovered from the Spotify API, the data
 
 There are some features that will be useless to our analysis because they are unique or equal to every data point : type, uri, analysis_url, id and track_href are to be removed from our dataset when performing an algorithm. That leaves us with 13 features. We use a MinMax scaler so that all of the values are within 0 and 1.
 
+<img src="https://user-images.githubusercontent.com/37664954/163826546-e80018b0-e43b-423a-9734-0ff36b367f54.png" width="500" height="500" />
+
 We then proceeded to analyze the distribution of each feature and their correlation :
-![distribution](https://user-images.githubusercontent.com/37664954/161640857-22656693-93c4-4046-b3f3-1bfbf5a50b5d.png)
+
 We can see that the mode, key and time_signature are only allowed to take few discrete values. This could be a problem when performing dimensionality reduction or any clustering algorithm. 
 
-![correlation](https://user-images.githubusercontent.com/37664954/161641329-1ecd4f35-5591-4db3-bb2d-7b6a0c8bd00b.png)
+<img src="https://user-images.githubusercontent.com/37664954/163826515-d3598b9d-bcdb-46e5-943c-fb0d703024eb.png" width="500" height="300" />
 
 We can see that some features are positively correlated : danceability and energy, energy and tempo. This was to be expected as per the descriptions above. 
 
@@ -69,21 +71,80 @@ Data visualization is very important in any project. It allows us to better unde
 
 Nonetheless, we can observe an interesting phoenomenon when we polt our components. Since our dataset is very large (>2M songs), we chose to sample 1000 points at random for visibility purposes. 
 
-![pca_scatter](https://user-images.githubusercontent.com/37664954/161643656-7eb34767-1c97-444d-8432-0bbccd16d58a.png)
+<img src="https://user-images.githubusercontent.com/37664954/161643656-7eb34767-1c97-444d-8432-0bbccd16d58a.png" width="500" height="300" />
+
 We can see a bimodal distribution in our data and we decided to investigate it further, since the original features no longer exist in the PCA space, we decided to perform a clustering algorithm and then analyse the distribution of our data for each feature, in each cluster. 
 
 #### K-Means
 We decided to perform the K-Means algorithm on our entire dataset. Since we have a very big dataset with many dimensions and K-Means is a distance based algorithm this was quite time consuming. 
 
-We performed the K-Means algorithm with different number of clusters and we stored the total inertia for each model to determine the optimal number of clusters with the Elbow Method. We tried to do it with the silhoutte coefficient but the calculation time was too large and our kernel timed out. The optimal number of clusters seems to be between 2 and 3 clusters.
-
-![elbow](https://user-images.githubusercontent.com/37664954/161785086-20370445-cf3a-4135-92da-393a75862227.png)
-
 Since we saw during the PCA implementation that there was a bimodal distribution in our data, we performed the algorithm to find 2 clusters. 
 
-![kmeans_feat](https://user-images.githubusercontent.com/37664954/161646877-b8ce951b-8eef-40f2-8d1e-f76d079e7d67.png)
+<img src="https://user-images.githubusercontent.com/37664954/163830621-315a79fc-2831-4b91-a9ae-a666abd2b8cf.png" width="500" height="300" />
 
-We can see that the only feature that seems to be clearly separated by the cluster is the mode. We are still searching for ways to work around this so that we can find other clusters. Removing the feature is one option although maybe a little simplistic. 
+We can see that the only feature that seems to be clearly separated by the cluster is the mode. We decided to remove this feature and perform clustering algorithms on the dataset. After performing PCA on our new dataset, we get a total explained variance of 53%. We sampled 5000 points and this is the visualization result of the data in the PCA space :
+
+<img src="https://user-images.githubusercontent.com/37664954/163833580-38ceecd7-559b-43e4-991d-68ab109cecdc.png" width="500" height="300" />
+
+We performed KMeans with a varying number of clusters and plotted the inertia accordingly to select the optimal k :
+
+<img src="https://user-images.githubusercontent.com/37664954/163834569-f97393b0-a4d9-49a0-a8c2-85d5615b4c2e.png" width="500" height="300" />
+
+The optimal number of clusters seems to be between 3 and 4. We choose k=3 and apply the KMeans algorithm. This is the final output in the PCA space: 
+
+<img src="https://user-images.githubusercontent.com/37664954/163836647-9b704189-ace8-4ef1-92f8-ec56d3a10687.png" width="500" height="300" />
+
+The separation is not what we would expect, it seems to be uniformely dividing the space. To further understand what separates the clusters we proceeded to plot the distribution of each feature, for eah cluster :
+
+<img src="https://user-images.githubusercontent.com/37664954/163846480-a9743815-8fcf-4610-9ffa-9c0aad17c10c.png" width="500" height="500" />
+
+We can see that cluster 0 and cluster 1 are clearly separated in terms of energy, danceability, time signature, acousticness and loudness. Cluster 0 regroups acoustic songs, slower songs like balads whereas cluster 1 regroups dance songs, high tempo and energy : party songs. Cluster 3 is not identifyiable. 
+
+We decided to try DBSCAN on our dataset. DBSCAN is a Density Based clustering method, it has the advantage of figuring out the number of clusters in the data. It has two input parameters : epsilon and MinPts. it is much more sensible to epsilon. To find the optimal value for this parameter we polot the average distance to the 4th nearest neighbor for every point in the dataset. The optimal value is at the point of maximal curvature : 
+
+<img src="https://user-images.githubusercontent.com/37664954/163857236-ae69f6f8-ef4c-4832-854a-261c826608ec.png" width="500" height="300" />
+
+We set epsilon=0.00075 and MinPts=10. The results are not very promising, the algorithm doesn't handle varying density clusters very well, here we have over 10000 clusters. After dropping the noise points, this is DBSCAN output :
+
+<img src="https://user-images.githubusercontent.com/37664954/163857654-0a96f2f4-f77d-4556-93b7-762e63acc8e4.png" width="500" height="300" />
+
+However, there is one high density cluster: cluster 1. We can see it in purple in the figure above. After analysis we can see that this cluster has very similar distribution to cluster 1 in KMeans. This leads us to believe that high energy, party songs are overwhelmingly more present in this dataset
+
+<img src="https://user-images.githubusercontent.com/37664954/163857837-29a33a9e-dc3d-4f26-b2e1-5ab11b2d69ff.png" width="500" height="500" />
+
+In order to confirm our hypothesis, we take all the ids from the songs in this high density cluster and we match the ids to the track information. 
+The dataset contains a field named "popularity" ranked in a scale of 0 to 100. We sort the songs from most to least popular and the top 10 most popular songs in this cluster are :
+
+|Song Title | Artist | Popularity |
+|-----------|--------|------------|
+|Infinity   |Jaymes Young| 95 |
+|Sweater Weather|The Neighbourhood| 92|
+|Dandelions |Ruth B.|91|
+|Without Me |Eminem|89|
+|Ginseng Strip 2002|Yung Lean	| 88|
+|The Real Slim Shady|Eminem|88|
+|The Nights |Avicii| 88|
+|goosebumps |Travis Scott	|87|
+|Classic    |MKTO|86|
+|In The End |Linkin Park|86|
+
+We can see that in addition to being fatser, high tempo songs they are also very popular. This cluster could also be tied to the songs popularity. But we do not have time within the time frame for this project to pursue this idea. 
+
+#### Unsupervised Learning for Playlist Completion 
+##### Collaborative Filtering and Matrix Factorization
+Collaborative Filtering is a commonly used technique in recommendation systems. For example, in the Netflix Prize recommendation competition, a recommendation system based on Collaborative Filtering and matrix factorization outperforms other algorithms and won first place. A lot of famous platforms use Collaborative Filtering as a part of their recommendation systems, such as Youtube and Amazon. The basic idea is to generate the latent representation of users and items from the interplay matrix among them based on the rationale that users with similar tastes would show interest in similar items. The same settings are given in our music recommendation task for the playlist continuous, where we can see the playlist as a series of positive (such as “likes”, giving high ratings, etc.) user interactions on the items (i.e. songs). The goal of our system is to recommend K songs for a given playlist. In our system, the users are the playlists and the items are the songs. 
+
+First, we extract a binary “rating matrix” M(dimension as number of playlists * number of unique songs) from the existing 1,000,000 playlists. For each element m<sub>ij</sub> of M, a value of 1 means that the playlist i contains the song j, otherwise the value will be 0. Here the implicit knowledge is that if a playlist does not contain a song means a negative interaction (such as “dislikes”, giving low ratings, etc.) among them.  When the matrix is ready, we then apply matrix factorization to it. 
+
+Matrix factorization is a widely used technique to generate meaningful latent representations of targets, it can be used as dimension reduction such as PCA and SVD. The matrix factorization of the collaborative filtering matrix (i.e. the rating matrix) will give two hidden matrices, one is the user (i.e. playlist) matrix U, where each row corresponds to one playlist and its hidden features, the other is the item (i.e. song) matrix V, where each row corresponds to one song and its hidden features. For the optimization process, we use mean squared error (i.e. Alternating Least Squares Matrix Factorization) as the loss function.  For a given playlist, the matrix multiply result of U and V<sup>T</sup>   will give songs with a recommended score sorted from highest to lowest, which represents how much the song matches the playlist. We consider the K songs with the highest recommended scores as the result for our playlist continuous task. 
+
+Evaluation: 
+To evaluate the performance of our model, we adopt the metrics from Spotify RecSys rules [6]: the R-Precision, which is a metric to calculate the number of retrieved relevant tracks divided by the number of known relevant tracks (regardless of the magnitude of relevance). We split the dataset into training and test datasets by the ratio of 0.8 and 0.2, that is, for every playlist, the first 80 percent is used for training and the last 20 percent of the playlist is used for testing. To reduce the effect of the length of the testing dataset, we dynamically chose the recommended number K as a multiple of the length of the test dataset. The final average r-precision score for our dataset is 0.17. 
+
+We also use a visualization approach to evaluate the recommendation result from our matrix factorization method. The goal of this visualization is to see if the latent features learned by matrix factorization are aligned with the explicit feature space. We first plot songs with the PCA algorithm on the feature vectors of the songs, which includes those features listed in the data exploration section. For the sake of space, we randomly chose 10 playlists to examine the results. In the following plot, each dot is one song with a 2D dimension reduction from its explicit feature vector. The training dataset for the playlist is color-coded in purple, the test dataset is in red and the recommendation made by the algorithm is in green. From the visualization, we can see that the recommendation results are spatially clustered with the training and testing songs, which demonstrates the ability of collaborative filtering and matrix factorization to learn the representative hidden feature from the interaction matrix (i.e. rating matrix). 
+
+<img width="1780" alt="MF2" src="https://user-images.githubusercontent.com/59711405/165016584-d8437a06-41ca-417d-9ee0-2d8ec993ab6f.png">
+
 
 ### Supervised Learning
 ##### Song embeddings based on playlists
@@ -99,7 +160,7 @@ Playlists used for example: #1: [1, 2, 4], #2: [3, 5, 6], #3: [7, 8]
 | Last song                                                                                                                  | Predicting a song_id of the playlist based on the other ones                                             |   [1,4] | 2
 | Last song with aggregate                                                                                                   | Predicting a song_id of the playlist based on the other ones but here embeddings of input are aggregated |   [6,5] | 3
 
-##### Results
+##### Custom Embeddings Results
 
 | Metrics                      | Discriminative model     | Binary Discriminative model | Last Song model | Last song with aggregate |
 |------------------------------|--------------------------|-------- | --- | --- |
@@ -108,7 +169,52 @@ Playlists used for example: #1: [1, 2, 4], #2: [3, 5, 6], #3: [7, 8]
 | Inference accuracy (top-500) | 0.4%                     | 0.0%    | 0.9%              | 0.1% |
 
 For now, we have not yet been able to achieve good results. Part of the problem is that the feature we are trying to create is very large (there is over 2M songs) and thus embeddings created are not yet accurate enough. Further improvements will include implementing a model similar to the Nearest Neighbor algorithm and try to make use of RNN layers.  
+### Playlist completion
+After trying to create embeddings usable by a Nearest Neighbor algorithm without success, we went to a more simple approach of directly predicting next songs in the playlists.
+All work here has been performed with Google Colab Pro.
+#### Models
+We tested 3 different Neural Networks architecture that are commonly used, that are made of (1) an Embedding layer, (2) a Feature extraction layer and (3) a Classifier layer.
+Models differ by their feature extraction layer:
+- Conv Model: we used a convolutional layer with a kernel size of 5
+- RNN Model: we used a bidirectional GRU layer
+- Transformer Model: We used a Transformer Encoder with 2 Multihead Attention with 4 heads
 
+Embedding layer has a dimension of 512 and the classifier layer is two fully connected layers with a hidden size of 512.
+#### Data preparation
+
+We have had a lot of compromises to do with our data for usability and efficiency reason.
+1. First, out of the 1 million original playlist, we could only use 400k for training because more would not fit into memory. This was randomly sampled.
+2. In 400k playlists we had over 1.6 million unique songs. This was raising 2 problems: as we will see later we create an Embedding layer. Such Embedding matrix would take 1.6M (number of songs) * 512 (embedding size) * 8 bytes (single float-64 size) = 6.5 GB memory. This is more than half half of the GPU RAM on Colab (12GB). Second problem is that if we consider each song as a potential class, it results in a classification task with too many labels. To tackle both these issues, we chose to select the 50k songs that appeared the most in the playlists.
+3. Resulting from previous point, we removed all songs that are not in the top 50k from the playlists. We removed completely all playlists that had a new size less than 5.
+4. Our models will require a fixed input size (known as padding size). To build our dataset, we select randomly a label, take a sample of maximum padding size of the other songs as input, and eventually pad it to the desired padding size if needed. Since we have randomness, we rebuild the dataset at each epoch to prevent overfitting.
+
+
+#### Experimental settings
+To train these networks we used an Adam optimizer with:
+- 20 epochs
+- a batch size of 64
+- a learning rate of 1e-4
+- a Cross Entropy Loss
+
+##### Training
+
+![playlist-completion-losses](https://user-images.githubusercontent.com/39535844/165012425-f742f207-1001-4b73-a89f-b9907a350dc0.png)
+
+
+##### Models results
+
+|                  | Conv Model | RNN Model | Transformer Model |
+|------------------|------------|-----------|-------------------|
+| # of parameters  | 53M        | 60M       | 352M              |
+| Final Test loss  | 9.502      | 10.111    | 11.328            |
+| Top-100 accuracy | 15.5%      | 0.5%      | 13.4%             |
+| Top-500 accuracy | 31.4%      | 2%        | 28.1%             |
+
+##### Conclusion
+
+2 Models stand out: the convolution and the transformer ones. The transformer one could be improved more by training more epochs as we see the test loss keep reducing (but we wanted to evaluate and compare the models on the same hyper parameters). We could also improve them by adding more depths in the feature extraction layer.
+
+But the results are already quite interesting. I have tested myself with my own playlists and I found the results satisfying. Some outliers were predicted but the models had mostly recommended me songs that were in adequation with my playlist.  
 #### Graph-based approach
 
 Neural network collaborative filtering for playlist completion:
@@ -199,6 +305,7 @@ Our project has two goals - genre classification and playlist completion. We wil
 3. He, Xiangnan, et al. "Lightgcn: Simplifying and powering graph convolution network for recommendation." Proceedings of the 43rd International ACM SIGIR conference on research and development in Information Retrieval. 2020.
 4. Sachdeva, Noveen, Kartik Gupta, and Vikram Pudi. "Attentive neural architecture incorporating song features for music recommendation." Proceedings of the 12th ACM Conference on Recommender Systems. 2018.
 5. Hamilton, Will, Zhitao Ying, and Jure Leskovec. "Inductive representation learning on large graphs." Advances in neural information processing systems 30 (2017).
+6. https://www.aicrowd.com/challenges/spotify-million-playlist-dataset-challenge#evaluation
 
 ## Appendix
 Download GANTT chart [here](https://docs.google.com/spreadsheets/d/1eBinr-KAz04P-j1TpmxQwzl0uz0aNe7P/export?format=xlsx).
