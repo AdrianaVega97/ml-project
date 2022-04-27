@@ -284,7 +284,7 @@ Non-trainable params: 0
 -----------------------------------------------------------------------
 ```
 
-Essentially, it is 3 convolution layers with max-pooling, batch normalization, and relu activation together with 2 fully-connected layers on flattened results from the conv layers. Dropout layers are added in between to prevent over-fitting. After extensive hyperparameter tuning on this network, we found that training over 15 epochs with a learning rate of 0.01 and batch size of 32 achieves the best result - we improved from the baseline's 59% classification accuracy on the test set to an astounding 70%, which we consider a huge success given the enormous feature space and limitations of our machine that was used to train the network. Full training code can be found [here](genre_classification/rp_classification.ipynb). Below are the loss and accuracies plots on the test set during training:
+Essentially, it is 3 convolution layers with max-pooling, batch normalization, and relu activation together with 2 fully-connected layers on flattened results from the conv layers. Dropout layers are added in between to prevent over-fitting. After extensive hyperparameter tuning on this network, we found that training over 15 epochs with a learning rate of 0.01 and batch size of 32 achieves the best result - we improved from the baseline's 58% classification accuracy on the test set to an astounding 70%, which we consider a huge success given the enormous feature space and limitations of our machine that was used to train the network. Full training code can be found [here](genre_classification/rp_classification.ipynb). Below are the loss and accuracies plots on the test set during training:
 
 ![](genre_classification/figures/loss_accuracy.png)
 
