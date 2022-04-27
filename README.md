@@ -24,12 +24,11 @@ We used Spotify's API to recover the audiofeatures for each track. Spotify limit
 
 ### Unsupervised Learning Part 1 - Dataset & feature exploration
 
-We have performed K-Means and PCA on some features of the dataset to better understand how they might be used to achieve our tasks of playlist completion and music genre prediction.
+We have performed K-Means, PCA, and DBSCAN on some features of the dataset to better understand how they might be used to achieve our tasks of playlist completion and music genre prediction.
 
 #### Miscellaneous analytics
-One of the first analysis to perform on a machine learning project is to explore the dataset. Make sure the dataset is clean. That all values are in the expected formats, decide how to handle missing values and more. 
 
-When it comes from the feature dataset recovered from the Spotify API, the dataset is very clean with no missing values. The table below is a brief description of each feature according to the Spotify documentation.
+The dataset obtained from Spotify API is very clean with no missing values. The table below is a brief description of each feature according to the Spotify documentation.
 
 | Feature          | Type    |  Description                                                                                           |
 | ---------------- | ------- | ------------------------------------------------------------------------------------------------------ |
@@ -67,7 +66,7 @@ We can see that some features are positively correlated : danceability and energ
 #### PCA
 Data visualization is very important in any project. It allows us to better understand our raw data and also our results. PCA is a dimensionality reduction algorithm that seeks to find a new space in which the variance of our data is maximized. After having implemented the PCA algorithm, the total variance explained by the first two principal components (we choose two so that it may be visualized), only explain 0.284 and 0.247 respectively. This means that we are losing a lot of information when only using the first two components. It is not ideal, more research needs to be made. 
 
-Nonetheless, we can observe an interesting phoenomenon when we polt our components. Since our dataset is very large (>2M songs), we chose to sample 1000 points at random for visibility purposes. 
+Nonetheless, we can observe an interesting phoenomenon when we plot our components. Since our dataset is very large (>2M songs), we chose to sample 1000 points at random for visibility purposes. 
 
 <img src="https://user-images.githubusercontent.com/37664954/161643656-7eb34767-1c97-444d-8432-0bbccd16d58a.png" width="500" height="300" />
 
@@ -100,7 +99,7 @@ We can see that cluster 0 and cluster 1 are clearly separated in terms of energy
 
 #### DBSCAN
 
-We decided to try DBSCAN on our dataset. DBSCAN is a Density Based clustering method, it has the advantage of figuring out the number of clusters in the data. It has two input parameters : epsilon and MinPts. it is much more sensible to epsilon. To find the optimal value for this parameter we polot the average distance to the 4th nearest neighbor for every point in the dataset. The optimal value is at the point of maximal curvature : 
+We decided to try DBSCAN on our dataset. DBSCAN is a Density Based clustering method, it has the advantage of figuring out the number of clusters in the data. It has two input parameters : epsilon and MinPts. it is much more sensible to epsilon. To find the optimal value for this parameter we plot the average distance to the 4th nearest neighbor for every point in the dataset. The optimal value is at the point of maximal curvature : 
 
 <img src="https://user-images.githubusercontent.com/37664954/163857236-ae69f6f8-ef4c-4832-854a-261c826608ec.png" width="500" height="300" />
 
