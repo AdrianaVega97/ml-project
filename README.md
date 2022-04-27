@@ -98,6 +98,8 @@ The separation is not what we would expect, it seems to be uniformely dividing t
 
 We can see that cluster 0 and cluster 1 are clearly separated in terms of energy, danceability, time signature, acousticness and loudness. Cluster 0 regroups acoustic songs, slower songs like balads whereas cluster 1 regroups dance songs, high tempo and energy : party songs. Cluster 3 is not identifyiable. 
 
+#### DBSCAN
+
 We decided to try DBSCAN on our dataset. DBSCAN is a Density Based clustering method, it has the advantage of figuring out the number of clusters in the data. It has two input parameters : epsilon and MinPts. it is much more sensible to epsilon. To find the optimal value for this parameter we polot the average distance to the 4th nearest neighbor for every point in the dataset. The optimal value is at the point of maximal curvature : 
 
 <img src="https://user-images.githubusercontent.com/37664954/163857236-ae69f6f8-ef4c-4832-854a-261c826608ec.png" width="500" height="300" />
