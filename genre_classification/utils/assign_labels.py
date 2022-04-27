@@ -126,7 +126,7 @@ if __name__ == '__main__':
             track_id = track_id.lstrip()[1:-1]
 
         if track_id in labels_mapping:
-            output.write("{0}\n".format(line.rstrip().replace(track_id, labels_mapping[track_id]).strip()[:-1]))
+            output.write("{0}\n".format(line.rstrip().replace(track_id, labels_mapping[track_id]).strip()))
 
     output.close()
 

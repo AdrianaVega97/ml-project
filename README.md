@@ -141,10 +141,50 @@ To establish a baseline, we created a simple classifier [SimpleRHClassifier](gen
 
 We split the 406427 songs into training and testing sets by an 8:2 raio, and trained `SimpleRHClassifier` using SGD as optimizer with a learning rate of 0.0001 over 5 epochs. With this, we achieved a classification accuracy of 0.58 on the testing set, which we establish as the baseline. Training code is found [here](genre_classification/classification.ipynb).
 
+With the baseline classifier in-place, we moved on to train a far more complex CNN classifier, `RPClassifier` on a more complex feature, **Rhythmic Patterns**, hoping to improve classification accuracy. This task proved to be far more daunting than expected - each rhythmic pattern feature has 1440 dimensions, which can be visualized as a `24 x 60` image of 2D distributions. The combined rhythmic pattern data for all labelled songs is around 5 GB even after cleaning. Below is a visualization of rhythmic pattern for 9 random songs from the dataset:
+
+![](genre_classification/figures/rp_visualization.png)
+
+As seen, there is clearly a better chance of classifying the correct genre based on this 2D feature. We designed a complex CNN network to classify genres based on feature. The network architecture can be found in the `RHClassifier` class of [classifiers.py](genre_classification/classifiers.py). Below is a schematics of the architecture:
+
+```
+-----------------------------------------------------------------------
+      Layer (type)        Output Shape         Param #     Tr. Param #
+=======================================================================
+          Conv2d-1     [1, 32, 60, 24]             320             320
+     BatchNorm2d-2     [1, 32, 60, 24]              64              64
+            ReLU-3     [1, 32, 60, 24]               0               0
+       MaxPool2d-4     [1, 32, 30, 12]               0               0
+         Dropout-5     [1, 32, 30, 12]               0               0
+          Conv2d-6     [1, 64, 30, 12]          18,496          18,496
+     BatchNorm2d-7     [1, 64, 30, 12]             128             128
+            ReLU-8     [1, 64, 30, 12]               0               0
+       MaxPool2d-9      [1, 64, 15, 6]               0               0
+        Dropout-10      [1, 64, 15, 6]               0               0
+         Conv2d-11     [1, 128, 15, 6]          73,856          73,856
+    BatchNorm2d-12     [1, 128, 15, 6]             256             256
+           ReLU-13     [1, 128, 15, 6]               0               0
+      MaxPool2d-14      [1, 128, 8, 4]               0               0
+        Dropout-15      [1, 128, 8, 4]               0               0
+         Linear-16            [1, 512]       2,097,664       2,097,664
+         Linear-16            [1, 512]       2,097,664       2,097,664
+           ReLU-17            [1, 512]               0               0
+        Dropout-18            [1, 512]               0               0
+         Linear-19             [1, 13]           6,669           6,669
+=======================================================================
+Total params: 2,197,453
+Trainable params: 2,197,453
+Non-trainable params: 0
+-----------------------------------------------------------------------
+```
+
+Essentially, it is 3 convolution layers with max-pooling, batch normalization, and relu activation together with 2 fully-connected layers on flattened results from the conv layers. Dropout layers are added in between to prevent over-fitting. After extensive hyperparameter tuning on this network, we found that training over 15 epochs with a learning rate of 0.01 and batch size of 32 achieves the best result - we improved from the baseline's 59% classification accuracy on the test set to an astounding 70%, which we consider a huge success given the enormous feature space and limitations of our machine that was used to train the network. Full training code can be found [here](genre_classification/rp_classification.ipynb). Below are the loss and accuracies plots on the test set during training:
+
+![](genre_classification/figures/loss_accuracy.png)
+
 #### Further work
 
 Supervised Learning:
-LSTM/RNN for genre prediction: To improve from the baseline, we will train an LSTM over more advanced features. The model will consist of several recurrent layers followed by linear layers. The rationale is to use the cell state (or hidden state) from the last recurrent layer as a learned embedding of the audio sample, and then use the subsequent linear layers to classify the embedding into the correct genre label.
 
 Sequential model for playlist completion: We will train a sequential model based on an attentive neural architecture incorporating song features (4).
 
